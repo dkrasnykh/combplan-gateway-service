@@ -1,7 +1,7 @@
 package com.orioninc.combplangatewayservice.controller;
 
-import com.orioninc.combplangatewayservice.config.RequestProducer;
 import com.orioninc.combplangatewayservice.dto.RequestDto;
+import com.orioninc.combplangatewayservice.service.RequestProducerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -11,15 +11,15 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/requests")
 public class RequestController {
-    private final RequestProducer requestProducer;
+    private final RequestProducerService requestService;
 
     @Autowired
-    public RequestController(RequestProducer requestProducer) {
-        this.requestProducer = requestProducer;
+    public RequestController(RequestProducerService requestService) {
+        this.requestService = requestService;
     }
 
     @PostMapping
     public void sendRequest(@RequestBody RequestDto dto) {
-        requestProducer.send(dto);
+        requestService.send(dto);
     }
 }
