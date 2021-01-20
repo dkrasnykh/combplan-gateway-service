@@ -11,10 +11,4 @@ class CombplanGatewayServiceApplicationTests {
 	@Test
 	void contextLoads() {
 	}
-
-	@Bean
-	public ObjectMapper objectMapper() {
-		return new ObjectMapper();
-	}
-
 }
