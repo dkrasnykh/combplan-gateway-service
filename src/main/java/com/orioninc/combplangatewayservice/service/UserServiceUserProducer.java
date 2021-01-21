@@ -2,7 +2,7 @@ package com.orioninc.combplangatewayservice.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.orioninc.combplangatewayservice.dto.RequestDto;
+import com.orioninc.combplangatewayservice.dto.UserDto;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.clients.producer.Producer;
 import org.apache.kafka.clients.producer.ProducerRecord;
@@ -12,31 +12,31 @@ import org.springframework.stereotype.Service;
 
 @Slf4j
 @Service
-public class RequestProducerService {
+public class UserServiceUserProducer {
     private final ObjectMapper objectMapper;
     private final Producer<Long, String> producer;
 
-    @Value("${kafka.topic.request}")
+    @Value("${kafka.topic.user}")
     private String topic;
 
     @Autowired
-    public RequestProducerService(ObjectMapper objectMapper, Producer<Long, String> producer) {
+    public UserServiceUserProducer(ObjectMapper objectMapper, Producer<Long, String> producer) {
         this.objectMapper = objectMapper;
         this.producer = producer;
     }
 
-    public void send(RequestDto request) {
-        log.info("<= sending {}", request.toString());
-        ProducerRecord<Long, String> record = new ProducerRecord<>(topic, request.getId(), writeValueAsString(request));
+    public void send(UserDto user) {
+        log.info("<= sending {}", user.toString());
+        ProducerRecord<Long, String> record = new ProducerRecord<>(topic, user.getId(), writeValueAsString(user));
         producer.send(record);
     }
 
-    private String writeValueAsString(RequestDto dto) {
+    private String writeValueAsString(UserDto user) {
         try {
-            return objectMapper.writeValueAsString(dto);
+            return objectMapper.writeValueAsString(user);
         } catch (JsonProcessingException e) {
             e.printStackTrace();
-            throw new RuntimeException("Writing value to JSON failed: " + dto.toString());
+            throw new RuntimeException("Writing value to JSON failed: " + user.toString());
         }
     }
 }
